@@ -1,6 +1,8 @@
 # Pre-commit Ad-Blocker
 
-Automatically blocks LLM-added co-authored-by trailers from your commit messages.
+The tools you use are not "co-authors" of your code.
+
+Block LLM-generated "Co-Authored-By" trailers in your commit messages.
 
 ## Usage
 
@@ -8,7 +10,7 @@ Automatically blocks LLM-added co-authored-by trailers from your commit messages
 > Make sure to install `commit-msg` hooks in your repo.
 > They are not installed by default.
 
-Make sure `commit-msg` hooks are installed in your repo:
+Install `commit-msg` hooks:
 
 ```shell
 # Using prek
