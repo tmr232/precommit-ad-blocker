@@ -4,9 +4,26 @@ Automatically blocks LLM-added co-authored-by trailers from your commit messages
 
 ## Usage
 
+> [!IMPORTANT]
+> Make sure to install `commit-msg` hooks in your repo.
+> They are not installed by default.
+
+Make sure `commit-msg` hooks are installed in your repo:
+
+```shell
+# Using prek
+prek install --hook-type commit-msg
+
+# or pre-commit
+pre-commit install --hook-type commit-msg
+```
+
 To block commit-message ads in your repo, add the following to your `.pre-commit-config.yaml`:
 
 ```yaml
+# Install both pre-commit and commit-msg hooks
+default_install_hook_types: [pre-commit, commit-msg]
+
 repos:
 - repo: https://github.com/tmr232/precommit-ad-blocker
   rev: v1.0.0
