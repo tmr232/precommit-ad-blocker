@@ -9,7 +9,13 @@ from more_itertools import partition
 
 app = typer.Typer()
 
-DEFAULT_BLOCKED_CO_AUTHORS: Final = {"*@ampcode.com", "*@anthropic.com"}
+DEFAULT_BLOCKED_CO_AUTHORS: Final = {
+    "*@ampcode.com",
+    "*@anthropic.com",
+    "*@cursor.com",
+    "gemini@google.com",
+    "*@openai.com",
+}
 DEFAULT_BLOCKED_TRAILER_KEYS: Final = {key.casefold() for key in ["Amp-Thread-ID"]}
 
 

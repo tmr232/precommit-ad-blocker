@@ -1,14 +1,14 @@
 [project]
-name = "precommit-adblock"
+name = "precommit-ad-blocker"
 version = "0.1.0"
-description = "Add your description here"
+description = "Pre-commit ad-blocker hook"
 readme = "README.md"
-authors = [{ name = "Tamir Bahar", email = "tamir.bahar@gmail.com" }]
+authors = [{ name = "Tamir Bahar" }]
 requires-python = ">=3.12"
 dependencies = ["more-itertools>=10.8.0", "typer>=0.24.1"]
 
 [project.scripts]
-precommit-adblock = "precommit_adblock:app"
+precommit-ad-blocker = "precommit_ad_blocker:app"
 
 [build-system]
 requires = ["uv_build>=0.10.5,<0.11.0"]

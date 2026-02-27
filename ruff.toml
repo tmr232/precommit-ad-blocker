@@ -2,8 +2,9 @@
 select = ["ALL"]
 
 ignore = [
-    "D",     # I don't care enough about docstrings for now
-    "ANN",   # Mypy does it better
-    "FA102", # Doesn't matter for 3.11 and newer
-    "T201",  # `print()` is ok for now
+    "D",      # I don't care enough about docstrings for now
+    "ANN",    # Mypy does it better
+    "FA102",  # Doesn't matter for 3.11 and newer
+    "T201",   # `print()` is ok for now
+    "COM812", # Clashes with ruff format
 ]
