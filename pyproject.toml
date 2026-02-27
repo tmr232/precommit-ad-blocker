@@ -8,8 +8,8 @@ requires-python = ">=3.12"
 dependencies = ["more-itertools>=10.8.0", "typer>=0.24.1"]
 
 [project.scripts]
-precommit-ad-blocker = "precommit_ad_blocker:app"
-precommit-ad-blocker-test-wrapper = "precommit_ad_blocker:test_wrapper_app"
+precommit-ad-blocker = "precommit_ad_blocker.ad_blocker:app"
+precommit-ad-blocker-test-wrapper = "precommit_ad_blocker.test_wrapper:test_wrapper_app"
 
 [build-system]
 requires = ["uv_build>=0.10.5,<0.11.0"]

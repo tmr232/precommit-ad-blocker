@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from precommit_ad_blocker import CoAuthoredBy, Config, remove_ads
+from precommit_ad_blocker.ad_blocker import CoAuthoredBy, Config, remove_ads
 
 
 @dataclass(kw_only=True)

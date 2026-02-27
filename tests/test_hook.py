@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from precommit_ad_blocker import (
+from precommit_ad_blocker.test_wrapper import (
     TEST_ENVVAR_CO_AUTHOR,
     TEST_ENVVAR_NO_DEFAULTS,
     TEST_ENVVAR_TRAILER,
@@ -52,7 +52,7 @@ class HookTestCase:
             env_vars[TEST_ENVVAR_CO_AUTHOR] = ",".join(self.extra_co_authors)
 
         if self.extra_trailer_keys:
-            env_vars[TEST_ENVVAR_TRAILER] = ",".join(self.extra_trailers)
+            env_vars[TEST_ENVVAR_TRAILER] = ",".join(self.extra_trailer_keys)
 
         return env_vars
 
