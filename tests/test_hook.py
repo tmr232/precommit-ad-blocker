@@ -27,6 +27,8 @@ def test_hook(commit_msg_with_ads: Path):
         [
             "prek",
             "try-repo",
+            "--no-progress",
+            "--verbose",
             ".",
             "precommit-ad-blocker",
             "--stage",
