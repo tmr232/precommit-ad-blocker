@@ -36,6 +36,8 @@ repos:
 To block specific co-authors or trailer-keys beyond the defaults, add them to the args:
 
 ```yaml
+default_install_hook_types: [pre-commit, commit-msg]
+
 repos:
 - repo: https://github.com/tmr232/precommit-ad-blocker
   rev: v1.0.0
@@ -47,6 +49,8 @@ repos:
 To disable the defaults co-author and trailer lists, use `--no-defaults`:
 
 ```yaml
+default_install_hook_types: [pre-commit, commit-msg]
+
 repos:
 - repo: https://github.com/tmr232/precommit-ad-blocker
   rev: v1.0.0
