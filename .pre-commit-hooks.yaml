@@ -3,3 +3,4 @@
   entry: precommit-adblock
   language: python
   stages: ["commit-msg"]
+  args: [--co-author, amp@ampcode.com]
