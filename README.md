@@ -44,17 +44,6 @@ repos:
       args: [--co-author=*@anthropic.com, --co-author=*@ampcode.com, --trailer=Amp-Thread-ID]
 ```
 
-To see which lines were blocked, add the `--verbose` arg:
-
-```yaml
-repos:
-- repo: https://github.com/tmr232/precommit-ad-blocker
-  rev: v1.0.0
-  hooks:
-    - id: precommit-ad-blocker
-      args: [--verbose]
-```
-
 To disable the defaults co-author and trailer lists, use `--no-defaults`:
 
 ```yaml

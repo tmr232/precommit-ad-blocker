@@ -1,5 +1,5 @@
 import fnmatch
-import sys
+import os
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -9,6 +9,7 @@ import typer
 from more_itertools import partition
 
 app = typer.Typer()
+test_wrapper_app = typer.Typer()
 
 DEFAULT_BLOCKED_CO_AUTHORS: Final = {
     "*@ampcode.com",
@@ -18,6 +19,10 @@ DEFAULT_BLOCKED_CO_AUTHORS: Final = {
     "*@openai.com",
 }
 DEFAULT_BLOCKED_TRAILER_KEYS: Final = {key.casefold() for key in ["Amp-Thread-ID"]}
+
+TEST_ENVVAR_CO_AUTHOR = "PRE_COMMIT_AD_BLOCKER_CO_AUTHORS"
+TEST_ENVVAR_TRAILER = "PRE_COMMIT_AD_BLOCKER_TRAILER_KEYS"
+TEST_ENVVAR_NO_DEFAULTS = "PRE_COMMIT_AD_BLOCKER_DISABLE_DEFAULTS"
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -77,7 +82,7 @@ def build_config(
     use_defaults: bool,
 ) -> Config:
     blocked_co_authors: set[str] = set()
-    extra_trailer_keys: set[str] = set()
+    blocked_trailer_keys: set[str] = set()
     if use_defaults:
         blocked_co_authors = DEFAULT_BLOCKED_CO_AUTHORS
         blocked_trailer_keys = DEFAULT_BLOCKED_TRAILER_KEYS
@@ -107,10 +112,7 @@ def main(
     ] = None,
     *,
     defaults: Annotated[bool, typer.Option(help="Include default blocklists.")] = True,
-    verbose: Annotated[bool, typer.Option(help="Show removed lines.")] = False,
 ) -> None:
-
-    print(sys.argv)
     config = build_config(
         extra_co_authors=co_author,
         extra_trailer_keys=trailer,
@@ -120,6 +122,16 @@ def main(
     block_result = remove_ads(commit_msg_file.read_text(), config.is_ad)
     commit_msg_file.write_text(block_result.clean)
 
-    if verbose:
-        for ad in block_result.blocked:
-            print(f"Blocked: {ad}")
+
+@test_wrapper_app.command()
+def test_wrapper_main(commit_msg_file: Path):
+    co_authors = os.environ.get(TEST_ENVVAR_CO_AUTHOR, "").split(",")
+    trailer_keys = os.environ.get(TEST_ENVVAR_TRAILER, "").split(",")
+    enable_defaults = not bool(os.environ.get(TEST_ENVVAR_NO_DEFAULTS, ""))
+
+    main(
+        commit_msg_file=commit_msg_file,
+        co_author=co_authors,
+        trailer=trailer_keys,
+        defaults=enable_defaults,
+    )
