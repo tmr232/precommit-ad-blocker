@@ -115,7 +115,6 @@ def main(
     )
 
     block_result = remove_ads(commit_msg_file.read_text(), config.is_ad)
-
     commit_msg_file.write_text(block_result.clean)
 
     if verbose:

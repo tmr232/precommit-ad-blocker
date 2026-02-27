@@ -10,26 +10,34 @@ def commit_msg_with_ads(tmp_path: Path):
     msg_file = tmp_path / "commig_msg"
     msg_file.write_text(
         textwrap.dedent(
-            """This is a commit message with ads.
+            """
+            This is a commit message with ads.
 
-                           This is the core of the commit message.
+            This is the core of the commit message.
 
-                           co-authored-by: Gemini <gemini@google.com>
-                           co-authored-by: Claude <claude@anthropic.com>
-                           """
+            co-authored-by: Gemini <gemini@google.com>
+            co-authored-by: Claude <claude@anthropic.com>
+            """
         )
     )
     return msg_file
 
 
-def test_hook(commit_msg_with_ads: Path):
+def test_hook(commit_msg_with_ads: Path, tmp_path: Path, repo_root: Path):
+    temp_repo_path = tmp_path / "temp_repo"
+    temp_repo_path.mkdir(exist_ok=False, parents=True)
+
+    subprocess.check_call(["git", "-C", str(temp_repo_path), "init"])
+
     output = subprocess.check_output(
         [
             "prek",
             "try-repo",
             "--no-progress",
+            "--cd",
+            str(temp_repo_path),
             "--verbose",
-            ".",
+            str(repo_root.resolve()),
             "precommit-ad-blocker",
             "--stage",
             "commit-msg",
@@ -40,5 +48,4 @@ def test_hook(commit_msg_with_ads: Path):
 
     assert b"Ad-Blocker" in output
 
-    commit_msg = commit_msg_with_ads.read_text()
-    assert "co-authored-by" not in commit_msg
+    assert "co-authored-by" not in commit_msg_with_ads.read_text()
