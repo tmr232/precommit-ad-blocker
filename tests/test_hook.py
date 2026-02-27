@@ -35,10 +35,10 @@ def test_hook(commit_msg_with_ads: Path):
             "commit-msg",
             "--commit-msg-filename",
             str(commit_msg_with_ads),
-            "--",
-            "--verbose",
         ]
     )
-    print(output)
+
     assert b"Ad-Blocker" in output
-    assert b"Blocked:" in output
+
+    commit_msg = commit_msg_with_ads.read_text()
+    assert "co-authored-by" not in commit_msg
