@@ -15,9 +15,4 @@ requires = ["uv_build>=0.10.5,<0.11.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = [
-    "inline-snapshot>=0.32.3",
-    "prek>=0.3.3",
-    "pytest>=9.0.2",
-    "ty>=0.0.19",
-]
+dev = ["prek>=0.3.3", "pytest>=9.0.2", "ty>=0.0.19"]
