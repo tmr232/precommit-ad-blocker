@@ -1,8 +1,9 @@
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Self, Annotated
 from itertools import filterfalse
+from pathlib import Path
+from typing import Annotated, Self
+
 import typer
 
 app = typer.Typer()
