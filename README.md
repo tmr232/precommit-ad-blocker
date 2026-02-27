@@ -30,7 +30,7 @@ repos:
 - repo: https://github.com/tmr232/precommit-ad-blocker
   rev: v1.0.0
   hooks:
-    - id: precommit-ad-blocker
+    - id: ad-blocker
 ```
 
 To block specific co-authors or trailer-keys beyond the defaults, add them to the args:
@@ -42,7 +42,7 @@ repos:
 - repo: https://github.com/tmr232/precommit-ad-blocker
   rev: v1.0.0
   hooks:
-    - id: precommit-ad-blocker
+    - id: ad-blocker
       args: [--co-author=*@anthropic.com, --co-author=*@ampcode.com, --trailer=Amp-Thread-ID]
 ```
 
@@ -55,6 +55,6 @@ repos:
 - repo: https://github.com/tmr232/precommit-ad-blocker
   rev: v1.0.0
   hooks:
-    - id: precommit-ad-blocker
+    - id: ad-blocker
       args: [--no-defaults]
 ```
