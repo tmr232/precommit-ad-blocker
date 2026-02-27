@@ -1,10 +1,10 @@
-- id: precommit-ad-blocker
+- id: ad-blocker
   name: Ad-Blocker
   entry: precommit-ad-blocker
   language: python
   stages: ["commit-msg"]
 
-- id: precommit-ad-blocker-for-internal-testing
+- id: ad-blocker-for-internal-testing
   name: Ad-Blocker-For-Testing
   entry: precommit-ad-blocker-test-wrapper
   language: python

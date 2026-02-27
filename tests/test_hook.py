@@ -103,7 +103,7 @@ def test_hook(
             str(temp_repo_path),
             "--verbose",
             str(repo_root.resolve()),
-            "precommit-ad-blocker-for-internal-testing",
+            "ad-blocker-for-internal-testing",
             "--stage",
             "commit-msg",
             "--commit-msg-filename",
