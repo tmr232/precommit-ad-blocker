@@ -1,0 +1,5 @@
+- id: precommit-adblock
+  name: Pre-commit Ad Blocker
+  entry: precommit-adblock
+  language: python
+  stages: ["commit-msg"]
