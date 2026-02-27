@@ -13,7 +13,7 @@ DEFAULT_BLOCKED_CO_AUTHORS: Final = {
     "*@ampcode.com",
     "*@anthropic.com",
     "*@cursor.com",
-    "gemini@google.com",
+    "*@google.com",
     "*@openai.com",
 }
 DEFAULT_BLOCKED_TRAILER_KEYS: Final = {key.casefold() for key in ["Amp-Thread-ID"]}
