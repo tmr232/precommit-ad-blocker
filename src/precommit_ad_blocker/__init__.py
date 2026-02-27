@@ -1,4 +1,5 @@
 import fnmatch
+import sys
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -108,6 +109,8 @@ def main(
     defaults: Annotated[bool, typer.Option(help="Include default blocklists.")] = True,
     verbose: Annotated[bool, typer.Option(help="Show removed lines.")] = False,
 ) -> None:
+
+    print(sys.argv)
     config = build_config(
         extra_co_authors=co_author,
         extra_trailer_keys=trailer,
