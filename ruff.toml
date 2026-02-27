@@ -8,3 +8,19 @@ ignore = [
     "T201",   # `print()` is ok for now
     "COM812", # Clashes with ruff format
 ]
+
+
+
+[lint.per-file-ignores]
+"**/test_*" = [
+  "B015",    # pointless comparison in tests aren't pointless
+  "B017",    # pytest.raises(Exception) is fine
+  "B018",    # pointless expressions in tests aren't pointless
+  "EM",      # no need for exception msg hygiene in tests
+  "PLR0124", # pointless comparison in tests aren't pointless
+  "S",       # security concerns don't matter in tests
+  "SIM201",  # sometimes we need to check `not ==`
+  "SIM202",  # sometimes we need to check `not ==`
+  "SIM300",  # Yoda rocks in asserts
+  "TRY",     # exception best practices don't matter in tests
+]

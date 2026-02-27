@@ -29,7 +29,10 @@ class CoAuthoredBy:
         name_part, _, email_part = value.rpartition("<")
         name = name_part.strip()
         email = email_part.strip().rstrip(">")
-        return CoAuthoredBy(name=name, email=email)
+        return cls(name=name, email=email)
+
+    def match(self, email: str) -> bool:
+        return fnmatch.fnmatch(self.email, email)
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -45,20 +48,49 @@ class Config:
             return True
 
         if key == "co-authored-by".casefold():
-            email = CoAuthoredBy.from_string(value).email
+            co_author = CoAuthoredBy.from_string(value)
             for blocked_co_author in self.blocked_co_authors:
-                if fnmatch.fnmatch(email, blocked_co_author):
+                if co_author.match(blocked_co_author):
                     return True
 
         return False
 
 
-def remove_ads(commit_msg: str, is_ad: Callable[[str], bool], *, verbose: bool = False):
+@dataclass(kw_only=True, frozen=True)
+class BlockerResult:
+    clean: str
+    blocked: list[str]
+
+
+def remove_ads(commit_msg: str, is_ad: Callable[[str], bool]) -> BlockerResult:
     not_ads, ads = partition(is_ad, commit_msg.splitlines())
-    if verbose:
-        for ad in ads:
-            print(f"Blocked: {ad}")
-    return "\n".join(not_ads)
+    clean = "\n".join(not_ads)
+    blocked = list(ads)
+    return BlockerResult(clean=clean, blocked=blocked)
+
+
+def build_config(
+    *,
+    extra_co_authors: list[str] | None,
+    extra_trailer_keys: list[str] | None,
+    use_defaults: bool,
+) -> Config:
+    blocked_co_authors: set[str] = set()
+    extra_trailer_keys: set[str] = set()
+    if use_defaults:
+        blocked_co_authors = DEFAULT_BLOCKED_CO_AUTHORS
+        blocked_trailer_keys = DEFAULT_BLOCKED_TRAILER_KEYS
+
+    if extra_co_authors:
+        blocked_co_authors.update(extra_co_authors)
+
+    if extra_trailer_keys:
+        blocked_trailer_keys.update(extra_trailer_keys)
+
+    return Config(
+        blocked_trailer_keys=blocked_trailer_keys,
+        blocked_co_authors=blocked_co_authors,
+    )
 
 
 @app.command()
@@ -76,27 +108,16 @@ def main(
     defaults: Annotated[bool, typer.Option(help="Include default blocklists.")] = True,
     verbose: Annotated[bool, typer.Option(help="Show removed lines.")] = False,
 ) -> None:
-    blocked_co_authors = set()
-    blocked_trailer_keys = set()
-    if defaults:
-        blocked_co_authors = DEFAULT_BLOCKED_CO_AUTHORS
-        blocked_trailer_keys = DEFAULT_BLOCKED_TRAILER_KEYS
-
-    if co_author:
-        blocked_co_authors.update(co_author)
-
-    if trailer:
-        blocked_trailer_keys.update(trailer)
-
-    config = Config(
-        blocked_trailer_keys=blocked_trailer_keys,
-        blocked_co_authors=blocked_co_authors,
+    config = build_config(
+        extra_co_authors=co_author,
+        extra_trailer_keys=trailer,
+        use_defaults=defaults,
     )
 
-    commit_msg_file.write_text(
-        remove_ads(
-            commit_msg_file.read_text(),
-            config.is_ad,
-            verbose=verbose,
-        ),
-    )
+    block_result = remove_ads(commit_msg_file.read_text(), config.is_ad)
+
+    commit_msg_file.write_text(block_result.clean)
+
+    if verbose:
+        for ad in block_result.blocked:
+            print(f"Blocked: {ad}")
